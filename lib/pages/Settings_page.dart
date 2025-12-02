@@ -105,9 +105,9 @@
 // }
 //above code saved as backup
 
-import 'package:befit/pages/forgot.dart';
-import 'package:befit/services/app_theme.dart';
-import 'package:befit/services/frostedGlassEffect.dart';
+import 'forgot.dart';
+import '../services/app_theme.dart';
+import '../services/frostedGlassEffect.dart';
 import 'package:flutter/material.dart';
 import 'About_page.dart';
 import 'SignUp_screen.dart';
@@ -139,14 +139,14 @@ class _SettingsDropdownState extends State<SettingsDropdown> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(height: 1, width: 50,),
+              SizedBox(height: 1, width: 50),
               Text(
                 'Settings',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Segoe UI',
-                  color: AppTheme.titleTextColor
+                  color: AppTheme.titleTextColor,
                 ),
                 // textAlign: TextAlign.center,
               ),
@@ -159,7 +159,10 @@ class _SettingsDropdownState extends State<SettingsDropdown> {
           ),
           Divider(),
           SwitchListTile(
-            title: Text('Dark Mode', style: TextStyle(color: AppTheme.titleTextColor),),
+            title: Text(
+              'Dark Mode',
+              style: TextStyle(color: AppTheme.titleTextColor),
+            ),
             value: _darkMode,
             onChanged: (val) {
               setState(() {
@@ -169,18 +172,27 @@ class _SettingsDropdownState extends State<SettingsDropdown> {
             secondary: Icon(Icons.dark_mode, color: AppTheme.titleTextColor),
           ),
           SwitchListTile(
-            title: Text('Notifications', style: TextStyle(color: AppTheme.titleTextColor),),
+            title: Text(
+              'Notifications',
+              style: TextStyle(color: AppTheme.titleTextColor),
+            ),
             value: _notifications,
             onChanged: (val) {
               setState(() {
                 _notifications = val;
               });
             },
-            secondary: Icon(Icons.notifications, color: AppTheme.titleTextColor),
+            secondary: Icon(
+              Icons.notifications,
+              color: AppTheme.titleTextColor,
+            ),
           ),
           ListTile(
             leading: Icon(Icons.lock_outline, color: AppTheme.titleTextColor),
-            title: Text('Change Password', style: TextStyle(color: AppTheme.titleTextColor),),
+            title: Text(
+              'Change Password',
+              style: TextStyle(color: AppTheme.titleTextColor),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -190,7 +202,10 @@ class _SettingsDropdownState extends State<SettingsDropdown> {
           ),
           ListTile(
             leading: Icon(Icons.info_outline, color: AppTheme.titleTextColor),
-            title: Text('App Info', style: TextStyle(color: AppTheme.titleTextColor),),
+            title: Text(
+              'App Info',
+              style: TextStyle(color: AppTheme.titleTextColor),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -200,7 +215,10 @@ class _SettingsDropdownState extends State<SettingsDropdown> {
           ),
           ListTile(
             leading: Icon(Icons.logout, color: AppTheme.titleTextColor),
-            title: Text('Logout', style: TextStyle(color: AppTheme.titleTextColor),),
+            title: Text(
+              'Logout',
+              style: TextStyle(color: AppTheme.titleTextColor),
+            ),
             onTap: () {
               Navigator.push(
                 context,

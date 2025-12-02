@@ -2,74 +2,101 @@ import 'package:flutter/material.dart';
 import 'app_theme.dart';
 
 class EditProfilePage extends StatefulWidget {
+  final String currentName;
+  final String currentEmail;
+  final String currentPhotoUrl;
+
+  const EditProfilePage({
+    super.key,
+    required this.currentName,
+    required this.currentEmail,
+    required this.currentPhotoUrl,
+  });
+
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: 'Dinah Gray');
-  final _emailController = TextEditingController(text: 'dinah.gray@email.com');
-  final _phoneController = TextEditingController(text: '+1 234 567 8900');
-  final _bioController = TextEditingController(
-    text: 'Fitness enthusiast and runner',
-  );
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _bioController;
 
   bool isPublic = true;
   bool isSharing = true;
   bool pushNotifications = false;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: currentName);
+    _emailController = TextEditingController(text: currentEmail);
+    _phoneController = TextEditingController(text: '+1 234 567 8900');
+    _bioController = TextEditingController(text: 'Fitness enthusiast');
+  }
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _bioController.dispose();
+    super.dispose();
+  }
+
+  String get currentName => widget.currentName;
+  String get currentEmail => widget.currentEmail;
+  String get currentPhotoUrl => widget.currentPhotoUrl;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         title: const Text('Edit Profile'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.cardColor,
         elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Profile updated successfully!'),
-                    backgroundColor: AppTheme.primaryColor,
+                    content: const Text('Profile updated successfully!'),
+                    backgroundColor: AppTheme.accentColor,
                   ),
                 );
-                Navigator.pop(context);
-              }
-            },
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: AppTheme.primaryColor,
-                fontWeight: FontWeight.bold,
+                Navigator.pop(context, true);
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(
+                  color: AppTheme.accentColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _buildProfilePhotoSection(),
-              const SizedBox(height: 20),
-              _buildFormFields(theme),
-              const SizedBox(height: 20),
-              _buildSettingsSection(theme),
-            ],
-          ),
-        ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        children: [
+          _buildProfilePhotoSection(),
+          const SizedBox(height: 24),
+          _buildFormSection(),
+          const SizedBox(height: 24),
+          _buildSettingsSection(),
+        ],
       ),
     );
   }
@@ -78,13 +105,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.cardColor,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: AppTheme.isDarkMode
+                ? Colors.black.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -92,10 +122,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
         children: [
           Stack(
             children: [
-              const CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.orange,
-                child: Icon(Icons.person, size: 50, color: Colors.white),
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppTheme.accentColor.withOpacity(0.3),
+                ),
+                child: Icon(
+                  Icons.person,
+                  size: 50,
+                  color: AppTheme.accentColor,
+                ),
               ),
               Positioned(
                 bottom: 0,
@@ -103,11 +141,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryColor,
+                    color: AppTheme.accentColor,
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                    Icons.camera_alt,
+                    Icons.camera_alt_rounded,
                     color: Colors.white,
                     size: 16,
                   ),
@@ -119,7 +157,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Text(
             'Change Profile Photo',
             style: TextStyle(
-              color: AppTheme.primaryColor,
+              color: AppTheme.accentColor,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -128,55 +166,59 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _buildFormFields(ThemeData theme) {
+  Widget _buildFormSection() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(20),
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: AppTheme.isDarkMode
+                ? Colors.black.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Personal Information',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textColor,
+            ),
+          ),
+          const SizedBox(height: 16),
           _buildTextField(
             controller: _nameController,
             label: 'Full Name',
-            icon: Icons.person,
-            validator: (value) => value == null || value.isEmpty
-                ? 'Please enter your name'
-                : null,
+            icon: Icons.person_outline_rounded,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _buildTextField(
             controller: _emailController,
             label: 'Email',
-            icon: Icons.email,
+            icon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
-            validator: (value) {
-              if (value == null || value.isEmpty)
-                return 'Please enter your email';
-              if (!value.contains('@')) return 'Enter a valid email';
-              return null;
-            },
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _buildTextField(
             controller: _phoneController,
             label: 'Phone Number',
-            icon: Icons.phone,
+            icon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           _buildTextField(
             controller: _bioController,
             label: 'Bio',
-            icon: Icons.info,
+            icon: Icons.info_outline_rounded,
             maxLines: 3,
           ),
         ],
@@ -184,25 +226,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _buildSettingsSection(ThemeData theme) {
+  Widget _buildSettingsSection() {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(20),
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: AppTheme.isDarkMode
+                ? Colors.black.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Privacy Settings', style: theme.textTheme.titleLarge),
-          const SizedBox(height: 16),
+          Text(
+            'Privacy Settings',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textColor,
+            ),
+          ),
+          const SizedBox(height: 12),
           _buildSwitchTile(
             title: 'Public Profile',
             subtitle: 'Allow others to view your profile',
@@ -232,19 +284,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required IconData icon,
     TextInputType? keyboardType,
     int maxLines = 1,
-    String? Function(String?)? validator,
   }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      maxLines: maxLines,
-      validator: validator,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: AppTheme.primaryColor),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-        fillColor: Colors.grey[50],
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        style: TextStyle(color: AppTheme.textColor),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: AppTheme.subtextColor, fontSize: 12),
+          prefixIcon: Icon(icon, color: AppTheme.accentColor, size: 18),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        ),
       ),
     );
   }
@@ -255,26 +314,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
     required bool value,
     required Function(bool) onChanged,
   }) {
-    return SwitchListTile(
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(fontSize: 12, color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: SwitchListTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: AppTheme.textColor,
+            fontSize: 15,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(fontSize: 12, color: AppTheme.subtextColor),
+        ),
+        value: value,
+        onChanged: onChanged,
+        activeColor: AppTheme.accentColor,
+        contentPadding: EdgeInsets.zero,
+        tileColor: Colors.transparent,
       ),
-      value: value,
-      onChanged: onChanged,
-      activeColor: AppTheme.primaryColor,
     );
   }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _bioController.dispose();
-    super.dispose();
-  }
 }
-
-//edit

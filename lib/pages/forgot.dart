@@ -45,17 +45,7 @@ class _ForgotState extends State<Forgot> {
       ),
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppTheme.appBarBg,
-              AppTheme.backgroundColor,
-              AppTheme.appBarBg,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: AppTheme.backgroundColor,
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
@@ -127,7 +117,7 @@ class _ForgotState extends State<Forgot> {
                                 ),
                                 style: const TextStyle(color: Colors.white),
                                 validator: (value) =>
-                                value == null || value.isEmpty
+                                    value == null || value.isEmpty
                                     ? 'Enter email'
                                     : null,
                               ),

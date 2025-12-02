@@ -172,7 +172,7 @@
 // }
 import 'package:flutter/material.dart';
 import 'day_workout_page.dart';
-import 'package:befit/services/app_theme.dart';
+import '../services/app_theme.dart';
 
 class SuggestedPage extends StatelessWidget {
   SuggestedPage({super.key});
@@ -419,7 +419,10 @@ class SuggestedPage extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [AppTheme.primaryColor, AppTheme.appBarBg],
+                          colors: [
+                            AppTheme.accentColor,
+                            AppTheme.accentColor.withOpacity(0.6),
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),

@@ -177,51 +177,56 @@ class _ProgresspageState extends State<Progresspage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppTheme.appBarBg,
-            AppTheme.backgroundColor,
-            AppTheme.appBarBg,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+    return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        title: const Text('Track Workout'),
+        centerTitle: true,
+        backgroundColor: AppTheme.cardColor,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: const Text('Track Workout'),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              _buildDailyView(MediaQuery.of(context).size.width),
-              _buildWaterIntakeCard(),
-              _buildCaloriesAndStepsCard(),
-              _buildWeightDetailsCard(),
-              if (weeklyData.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                       Text(
-                        'Weekly Summary',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.titleTextColor,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            _buildDailyView(MediaQuery.of(context).size.width),
+            const SizedBox(height: 24),
+            _buildWaterIntakeCard(),
+            const SizedBox(height: 20),
+            _buildCaloriesAndStepsCard(),
+            const SizedBox(height: 20),
+            _buildWeightDetailsCard(),
+            if (weeklyData.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Weekly Summary',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppTheme.cardColor,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: AppTheme.dividerColor,
+                          width: 0.5,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        height: 180,
+                      child: SizedBox(
+                        height: 160,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -249,24 +254,31 @@ class _ProgresspageState extends State<Progresspage> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Container(
-                                      width: 10,
-                                      height: (steps / 2000) * 100,
-                                      color: Colors.green,
+                                      width: 8,
+                                      height: (steps / 2000) * 80,
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.primaryGreen,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
                                     ),
-                                    const SizedBox(width: 4),
+                                    const SizedBox(width: 6),
                                     Container(
-                                      width: 10,
-                                      height: (calories / 200) * 100,
-                                      color: Colors.orange,
+                                      width: 8,
+                                      height: (calories / 200) * 80,
+                                      decoration: BoxDecoration(
+                                        color: AppTheme.primaryOrange,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 12),
                                 Text(
                                   day,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: AppTheme.titleTextColor,
+                                    color: AppTheme.subtextColor,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],
@@ -274,37 +286,47 @@ class _ProgresspageState extends State<Progresspage> {
                           }).toList(),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
   }
 
   Widget _standardCard({required String title, required Widget child}) {
-    return Card(
-      color: Colors.black.withOpacity(0.4),
-      margin: const EdgeInsets.all(16.0),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.isDarkMode
+                ? Colors.black.withOpacity(0.2)
+                : Colors.grey.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textColor,
             ),
-            const SizedBox(height: 12),
-            child,
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          child,
+        ],
       ),
     );
   }
@@ -321,42 +343,78 @@ class _ProgresspageState extends State<Progresspage> {
           style: TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,
-            color: AppTheme.titleTextColor,
+            color: AppTheme.accentColor,
           ),
         ),
         const SizedBox(height: 16),
         Text(
           "Calories Burned: ${_caloriesBurned.toStringAsFixed(2)} kcal",
-          style:  TextStyle(fontSize: 20, color: AppTheme.titleTextColor),
+          style: TextStyle(fontSize: 16, color: AppTheme.textColor),
         ),
         const SizedBox(height: 8),
         Text(
           "Steps: $steps",
-          style:  TextStyle(fontSize: 20, color: AppTheme.titleTextColor),
+          style: TextStyle(fontSize: 16, color: AppTheme.textColor),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton.icon(
-              icon: Icon(Icons.play_arrow, color: AppTheme.titleTextColor),
-              label: Text('Start', style: TextStyle(color: AppTheme.titleTextColor)),
+              icon: const Icon(Icons.play_arrow),
+              label: const Text('Start'),
               onPressed: _startTimer,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryGreen,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
+            const SizedBox(width: 12),
             ElevatedButton.icon(
-              icon: Icon(Icons.pause, color: AppTheme.titleTextColor),
-              label: Text('Pause', style: TextStyle(color: AppTheme.titleTextColor)),
+              icon: const Icon(Icons.pause),
+              label: const Text('Pause'),
               onPressed: _pauseTimer,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryOrange,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
+            const SizedBox(width: 12),
             ElevatedButton.icon(
-              icon: Icon(Icons.save, color: AppTheme.titleTextColor),
-              label: Text('Save', style: TextStyle(color: AppTheme.titleTextColor),),
-              onPressed: () async {await updateStreakOnWorkout();
-                await _saveProgressAndReset();}
+              icon: const Icon(Icons.save),
+              label: const Text('Save'),
+              onPressed: () async {
+                await updateStreakOnWorkout();
+                await _saveProgressAndReset();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.accentColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
       ],
     );
   }
@@ -369,14 +427,14 @@ class _ProgresspageState extends State<Progresspage> {
         children: [
           Text(
             'Cups: $waterCups',
-            style: const TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 18, color: AppTheme.textColor),
           ),
           Row(
             children: [
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.remove_circle_outline,
-                  color: Colors.white,
+                  color: AppTheme.primaryRed,
                 ),
                 onPressed: () {
                   setState(() {
@@ -390,7 +448,10 @@ class _ProgresspageState extends State<Progresspage> {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.add_circle_outline, color: Colors.white),
+                icon: Icon(
+                  Icons.add_circle_outline,
+                  color: AppTheme.primaryGreen,
+                ),
                 onPressed: () {
                   setState(() {
                     waterCups++;
@@ -415,14 +476,26 @@ class _ProgresspageState extends State<Progresspage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Total Calories Burned: $calories kcal',
-            style: const TextStyle(fontSize: 18, color: Colors.white),
+          Row(
+            children: [
+              Icon(Icons.local_fire_department, color: AppTheme.primaryOrange),
+              const SizedBox(width: 12),
+              Text(
+                'Total Calories Burned: $calories kcal',
+                style: TextStyle(fontSize: 16, color: AppTheme.textColor),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Total Steps: $steps',
-            style: const TextStyle(fontSize: 18, color: Colors.white),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(Icons.directions_walk, color: AppTheme.primaryGreen),
+              const SizedBox(width: 12),
+              Text(
+                'Total Steps: $steps',
+                style: TextStyle(fontSize: 16, color: AppTheme.textColor),
+              ),
+            ],
           ),
         ],
       ),
@@ -437,32 +510,45 @@ class _ProgresspageState extends State<Progresspage> {
         children: [
           Text(
             'Current Weight: ${currentWeight.toStringAsFixed(1)} kg',
-            style: const TextStyle(fontSize: 18, color: Colors.white),
+            style: TextStyle(fontSize: 16, color: AppTheme.textColor),
           ),
-          const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const WeightDetailsPage(),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const WeightDetailsPage(),
+                  ),
+                );
+                _fetchLatestWeight();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.accentColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              );
-              _fetchLatestWeight();
-            },
-            child: Text('View/Add Weight Details', style: TextStyle(color: AppTheme.titleTextColor),),
+              ),
+              child: const Text('View/Add Weight Details'),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
 Future<void> updateStreakOnWorkout() async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) return;
 
   final now = DateTime.now();
-  final todayStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+  final todayStr =
+      "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
 
   final streakDocRef = FirebaseFirestore.instance
       .collection('users')
@@ -488,15 +574,9 @@ Future<void> updateStreakOnWorkout() async {
     } else if (difference == 0) {
       // Already logged today – do nothing
     } else {
-      await streakDocRef.set({
-        'streakCount': 1,
-        'lastWorkoutDate': todayStr,
-      });
+      await streakDocRef.set({'streakCount': 1, 'lastWorkoutDate': todayStr});
     }
   } else {
-    await streakDocRef.set({
-      'streakCount': 1,
-      'lastWorkoutDate': todayStr,
-    });
+    await streakDocRef.set({'streakCount': 1, 'lastWorkoutDate': todayStr});
   }
 }

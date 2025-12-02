@@ -104,27 +104,23 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Beƒιт AI'),
+        title: const Text('BeFit AI'),
+        backgroundColor: AppTheme.cardColor,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
-            Navigator.pop(context); // Navigate back
+            Navigator.pop(context);
           },
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppTheme.appBarBg,
-              AppTheme.backgroundColor,
-              AppTheme.appBarBg,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        color: AppTheme.backgroundColor,
         child: SafeArea(
           child: Column(
             children: [
@@ -134,30 +130,65 @@ class _ChatPageState extends State<ChatPage> {
                   onSend: getGeminiResponse,
                   messages: _messages,
                   messageOptions: MessageOptions(
-                    currentUserContainerColor: Colors.deepPurpleAccent,
-                    containerColor: Colors.black.withAlpha(160),
-                    textColor: Colors.white,
-                    borderRadius: 12.0,
+                    currentUserContainerColor: AppTheme.accentColor,
+                    containerColor: AppTheme.cardColor,
+                    textColor: AppTheme.textColor,
+                    currentUserTextColor: Colors.white,
+                    borderRadius: 16.0,
                     showTime: true,
+                    messagePadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                   ),
                   inputOptions: InputOptions(
                     inputDecoration: InputDecoration(
-                      hintText: "Type your message...",
-                      hintStyle: TextStyle(color: Colors.white54),
+                      hintText: "Ask me anything...",
+                      hintStyle: TextStyle(color: AppTheme.subtextColor),
                       filled: true,
-                      fillColor: Colors.black.withOpacity(0.2),
+                      fillColor: AppTheme.cardColor,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(
+                          color: AppTheme.dividerColor,
+                          width: 0.5,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(
+                          color: AppTheme.dividerColor,
+                          width: 0.5,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(
+                          color: AppTheme.accentColor,
+                          width: 1.5,
+                        ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
                     ),
-                    inputTextStyle: const TextStyle(color: Colors.white),
+                    inputTextStyle: TextStyle(
+                      color: AppTheme.textColor,
+                      fontSize: 16,
+                    ),
                     sendButtonBuilder: (send) {
-                      return IconButton(
-                        icon: const Icon(Icons.send, color: Colors.deepPurple),
-                        onPressed: _isTyping ? null : send,
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.send_rounded,
+                            color: _isTyping
+                                ? AppTheme.subtextColor
+                                : AppTheme.accentColor,
+                          ),
+                          onPressed: _isTyping ? null : send,
+                        ),
                       );
                     },
                     alwaysShowSend: true,

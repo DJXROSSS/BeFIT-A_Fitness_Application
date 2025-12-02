@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 // Assuming app_theme.dart is in the services directory or accessible via this path
-import 'package:befit/services/app_theme.dart';
-
+import 'app_theme.dart';
 
 const String GEMINI_API_KEY = ''; // <--- PLACE YOUR API KEY HERE
 
@@ -37,15 +36,13 @@ class _MealChatPageState extends State<MealChatPage> {
     });
 
     try {
-
-      final String mealPrompt = "Generate a meal ricepe with full elaboration and also write a points how to make it: \"${message
-          .text}\". ";
-
+      final String mealPrompt =
+          "Generate a meal ricepe with full elaboration and also write a points how to make it: \"${message.text}\". ";
 
       final content = Content.text(mealPrompt);
       final response = await _session.sendMessage(content);
-      final reply = response.text ??
-          "⚠️ Gemini didn't return a meal suggestion.";
+      final reply =
+          response.text ?? "⚠️ Gemini didn't return a meal suggestion.";
 
       setState(() {
         _messages.insert(
@@ -136,7 +133,9 @@ class _MealChatPageState extends State<MealChatPage> {
                         borderSide: BorderSide.none,
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                     ),
                     inputTextStyle: TextStyle(color: Colors.white),
                     sendButtonBuilder: (send) {

@@ -26,23 +26,39 @@ Widget customCardButton({
   required VoidCallback onTap,
 }) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
     child: Material(
-      color: AppTheme.textColor.withOpacity(0.1),
-      borderRadius: BorderRadius.circular(16),
-      elevation: 0,
+      color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppTheme.cardColor,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.dividerColor, width: 0.5),
+            boxShadow: [
+              BoxShadow(
+                color: AppTheme.isDarkMode
+                    ? Colors.black.withOpacity(0.2)
+                    : Colors.grey.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.brown.shade100.withOpacity(0.2),
-                child: Icon(icon, color: AppTheme.textColor),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.accentColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: AppTheme.accentColor, size: 24),
               ),
-              SizedBox(width: 16),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,23 +66,27 @@ Widget customCardButton({
                     Text(
                       title,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         color: AppTheme.textColor,
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       subtitle,
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppTheme.textColor.withAlpha(179),
+                        color: AppTheme.subtextColor,
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.arrow_forward_ios, color: Colors.white38, size: 18),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: AppTheme.subtextColor,
+                size: 16,
+              ),
             ],
           ),
         ),
@@ -81,36 +101,30 @@ class DietPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
+      backgroundColor: AppTheme.backgroundColor,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppTheme.appBarBg,
-              AppTheme.backgroundColor,
-              AppTheme.appBarBg,
-            ],
-            stops: [0, 0.6, 1],
-          ),
-        ),
         child: ListView(
-          padding: EdgeInsets.symmetric(vertical: 24),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                color: AppTheme.cardColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.dividerColor, width: 0.5),
+              ),
               child: Text(
                 'Choose Calculator',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
                   color: AppTheme.textColor,
                 ),
                 textAlign: TextAlign.left,
               ),
             ),
+            const SizedBox(height: 20),
             customCardButton(
               icon: Icons.local_fire_department,
               title: 'Calorie Intake Calculator',
@@ -133,15 +147,6 @@ class DietPage extends StatelessWidget {
                 ),
               ),
             ),
-            // customCardButton(
-            //   icon: Icons.fastfood_rounded,
-            //   title: 'Meal Calculator',
-            //   subtitle: 'Check estimated calories in your meal.',
-            //   onTap: () => Navigator.push(
-            //     context,
-            //     MaterialPageRoute(builder: (_) => MealCalculatorScreen()),
-            //   ),
-            // ),
           ],
         ),
       ),
@@ -174,21 +179,22 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
   InputDecoration buildDarkInputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(color: AppTheme.textColor.withAlpha(138)),
+      hintStyle: TextStyle(color: AppTheme.subtextColor),
       filled: true,
-      fillColor: Colors.black.withOpacity(0.2),
+      fillColor: AppTheme.cardColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppTheme.textColor.withAlpha(61)),
+        borderSide: BorderSide(color: AppTheme.dividerColor, width: 0.5),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppTheme.textColor.withAlpha(61)),
+        borderSide: BorderSide(color: AppTheme.dividerColor, width: 0.5),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppTheme.textColor.withAlpha(153)),
+        borderSide: BorderSide(color: AppTheme.accentColor, width: 1.5),
       ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
     );
   }
 
@@ -260,15 +266,17 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
     double heightCm = heightUnit == 'Cm' ? height : height * 30.48;
 
     if (age > 150 || weight <= 0 || height <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter valid inputs.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please enter valid inputs.')));
       return;
     }
 
     double activityFactor = 1.2;
-    if (activityLevel == 'Moderate') activityFactor = 1.55;
-    else if (activityLevel == 'High') activityFactor = 1.9;
+    if (activityLevel == 'Moderate')
+      activityFactor = 1.55;
+    else if (activityLevel == 'High')
+      activityFactor = 1.9;
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -278,16 +286,20 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
           : 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
       double tdee = bmr * activityFactor;
 
-      if (goal == 'Lose Weight') tdee *= 0.85;
-      else if (goal == 'Gain Muscle') tdee *= 1.15;
+      if (goal == 'Lose Weight')
+        tdee *= 0.85;
+      else if (goal == 'Gain Muscle')
+        tdee *= 1.15;
 
       result = '${tdee.toStringAsFixed(0)}';
       await prefs.setString('last_calorie_result', result);
       result = '$result kcal/day';
     } else {
       double multiplier = 0.8;
-      if (activityLevel == 'Moderate') multiplier = 1.2;
-      else if (activityLevel == 'High') multiplier = 2.0;
+      if (activityLevel == 'Moderate')
+        multiplier = 1.2;
+      else if (activityLevel == 'High')
+        multiplier = 2.0;
       if (goal == 'Gain Muscle') multiplier += 0.3;
 
       double protein = weightKg * multiplier;
@@ -303,7 +315,7 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("OK", style: TextStyle(color: AppTheme.titleTextColor),),
+            child: Text("OK", style: TextStyle(color: AppTheme.titleTextColor)),
           ),
         ],
       ),
@@ -312,21 +324,25 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
 
   Widget modernInputField({required String label, required Widget field}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppTheme.textColor.withAlpha(61)),
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: TextStyle(color: AppTheme.textColor.withOpacity(0.7)),
+            style: TextStyle(
+              color: AppTheme.subtextColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           field,
         ],
       ),
@@ -339,159 +355,172 @@ class _IntakeCalculatorScreenState extends State<IntakeCalculatorScreen> {
         ? "Protein Intake Calculator"
         : "Calorie Intake Calculator";
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppTheme.appBarBg, AppTheme.backgroundColor],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+      backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        title: Text(title),
+        backgroundColor: AppTheme.cardColor,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
         ),
-        child: ListView(
-          children: [
-            Text(
-              title,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(color: AppTheme.textColor),
-              textAlign: TextAlign.center,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: AppTheme.textColor,
+              fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 24),
-
-            modernInputField(
-              label: "Age",
-              field: TextField(
-                controller: ageController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                style: TextStyle(color: AppTheme.textColor),
-                decoration: buildDarkInputDecoration("Enter your age"),
-              ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          modernInputField(
+            label: "Age",
+            field: TextField(
+              controller: ageController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              style: TextStyle(color: AppTheme.textColor),
+              decoration: buildDarkInputDecoration("Enter your age"),
             ),
-            modernInputField(
-              label: "Weight",
-              field: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: weightController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(color: AppTheme.textColor),
-                      decoration: buildDarkInputDecoration("Weight"),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  DropdownButton<String>(
-                    value: weightUnit,
-                    dropdownColor: Colors.grey.shade900,
+          ),
+          modernInputField(
+            label: "Weight",
+            field: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: TextStyle(color: AppTheme.textColor),
-                    onChanged: (val) => setState(() => weightUnit = val!),
-                    items: ['Kg', 'Lbs']
-                        .map((u) => DropdownMenuItem(value: u, child: Text(u)))
-                        .toList(),
+                    decoration: buildDarkInputDecoration("Weight"),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 12),
+                DropdownButton<String>(
+                  value: weightUnit,
+                  dropdownColor: AppTheme.cardColor,
+                  style: TextStyle(color: AppTheme.textColor),
+                  onChanged: (val) => setState(() => weightUnit = val!),
+                  items: ['Kg', 'Lbs']
+                      .map((u) => DropdownMenuItem(value: u, child: Text(u)))
+                      .toList(),
+                ),
+              ],
             ),
-            modernInputField(
-              label: "Height",
-              field: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: heightController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: TextStyle(color: AppTheme.textColor),
-                      decoration: buildDarkInputDecoration("Height"),
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  DropdownButton<String>(
-                    value: heightUnit,
-                    dropdownColor: Colors.grey.shade900,
+          ),
+          modernInputField(
+            label: "Height",
+            field: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: heightController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: TextStyle(color: AppTheme.textColor),
-                    onChanged: (val) => setState(() => heightUnit = val!),
-                    items: ['Cm', 'Ft']
-                        .map((u) => DropdownMenuItem(value: u, child: Text(u)))
-                        .toList(),
+                    decoration: buildDarkInputDecoration("Height"),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 12),
+                DropdownButton<String>(
+                  value: heightUnit,
+                  dropdownColor: AppTheme.cardColor,
+                  style: TextStyle(color: AppTheme.textColor),
+                  onChanged: (val) => setState(() => heightUnit = val!),
+                  items: ['Cm', 'Ft']
+                      .map((u) => DropdownMenuItem(value: u, child: Text(u)))
+                      .toList(),
+                ),
+              ],
             ),
-            modernInputField(
-              label: "Gender",
-              field: Row(
-                children: [
-                  Expanded(
-                    child: RadioListTile(
-                      title: Text(
-                        "Male",
-                        style: TextStyle(color: AppTheme.textColor),
-                      ),
-                      value: 'Male',
-                      groupValue: gender,
-                      onChanged: (val) => setState(() => gender = val!),
+          ),
+          modernInputField(
+            label: "Gender",
+            field: Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: Text(
+                      "Male",
+                      style: TextStyle(color: AppTheme.textColor),
                     ),
+                    value: 'Male',
+                    groupValue: gender,
+                    onChanged: (val) => setState(() => gender = val!),
+                    contentPadding: EdgeInsets.zero,
                   ),
-                  Expanded(
-                    child: RadioListTile(
-                      title: Text(
-                        "Female",
-                        style: TextStyle(color: AppTheme.textColor),
-                      ),
-                      value: 'Female',
-                      groupValue: gender,
-                      onChanged: (val) => setState(() => gender = val!),
+                ),
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: Text(
+                      "Female",
+                      style: TextStyle(color: AppTheme.textColor),
                     ),
+                    value: 'Female',
+                    groupValue: gender,
+                    onChanged: (val) => setState(() => gender = val!),
+                    contentPadding: EdgeInsets.zero,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            modernInputField(
-              label: "Activity Level",
-              field: DropdownButtonFormField<String>(
-                value: activityLevel.isEmpty ? null : activityLevel,
-                style: TextStyle(color: AppTheme.textColor),
-                dropdownColor: AppTheme.appBarBg,
-                decoration: buildDarkInputDecoration("Select Activity Level"),
-                items: ['Low', 'Moderate', 'High']
-                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
-                    .toList(),
-                onChanged: (val) => setState(() => activityLevel = val!),
-              ),
+          ),
+          modernInputField(
+            label: "Activity Level",
+            field: DropdownButtonFormField<String>(
+              value: activityLevel.isEmpty ? null : activityLevel,
+              style: TextStyle(color: AppTheme.textColor),
+              dropdownColor: AppTheme.cardColor,
+              decoration: buildDarkInputDecoration("Select Activity Level"),
+              items: [
+                'Low',
+                'Moderate',
+                'High',
+              ].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
+              onChanged: (val) => setState(() => activityLevel = val!),
             ),
-            modernInputField(
-              label: "Goal",
-              field: DropdownButtonFormField<String>(
-                value: goal.isEmpty ? null : goal,
-                style: TextStyle(color: AppTheme.textColor),
-                dropdownColor: AppTheme.appBarBg,
-                decoration: buildDarkInputDecoration("Select your goal"),
-                items: ['Lose Weight', 'Maintain Weight', 'Gain Muscle']
-                    .map((v) => DropdownMenuItem(value: v, child: Text(v)))
-                    .toList(),
-                onChanged: (val) => setState(() => goal = val!),
-              ),
+          ),
+          modernInputField(
+            label: "Goal",
+            field: DropdownButtonFormField<String>(
+              value: goal.isEmpty ? null : goal,
+              style: TextStyle(color: AppTheme.textColor),
+              dropdownColor: AppTheme.cardColor,
+              decoration: buildDarkInputDecoration("Select your goal"),
+              items: [
+                'Lose Weight',
+                'Maintain Weight',
+                'Gain Muscle',
+              ].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
+              onChanged: (val) => setState(() => goal = val!),
             ),
-            SizedBox(height: 24),
-            ElevatedButton.icon(
+          ),
+          const SizedBox(height: 28),
+          SizedBox(
+            height: 50,
+            child: ElevatedButton.icon(
               onPressed: calculateResult,
-              icon: Icon(Icons.calculate),
-              label: Text("Calculate", style: TextStyle(color: AppTheme.titleTextColor)),
+              icon: const Icon(Icons.calculate),
+              label: const Text(
+                "Calculate",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
               style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 14),
-                backgroundColor: AppTheme.appBarBg,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                backgroundColor: AppTheme.accentColor,
+                foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

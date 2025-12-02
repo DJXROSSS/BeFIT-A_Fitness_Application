@@ -1,4 +1,4 @@
-import 'package:befit/services/app_theme.dart';
+import '../services/app_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,11 +40,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() => isSaving = true);
 
     try {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).update({
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'photoUrl': _photoUrlController.text,
-      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+            'name': _nameController.text,
+            'email': _emailController.text,
+            'photoUrl': _photoUrlController.text,
+          });
 
       // Optionally update FirebaseAuth user info
       await user.updateDisplayName(_nameController.text);
@@ -65,61 +68,105 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Edit Profile", style: TextStyle(color: AppTheme.titleTextColor),),
-        backgroundColor: AppTheme.appBarBg,
-      ),
       backgroundColor: AppTheme.backgroundColor,
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              AppTheme.appBarBg,
-              AppTheme.backgroundColor,
-              AppTheme.appBarBg,
-            ],
-            stops: [0, 0.6, 1],
-          ),
+      appBar: AppBar(
+        title: const Text("Edit Profile"),
+        backgroundColor: AppTheme.cardColor,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
         ),
-        child:
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                _buildTextField("Name", _nameController),
-                const SizedBox(height: 16),
-                _buildTextField("Email", _emailController),
-                const SizedBox(height: 16),
-                _buildTextField("Photo URL", _photoUrlController),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: isSaving ? null : saveChanges,
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  child: isSaving
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text("Save Changes"),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        children: [
+          const SizedBox(height: 8),
+          _buildSectionTitle("Basic Information"),
+          const SizedBox(height: 16),
+          _buildTextField(
+            "Full Name",
+            _nameController,
+            Icons.person_outline_rounded,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            "Email Address",
+            _emailController,
+            Icons.email_outlined,
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            "Photo URL",
+            _photoUrlController,
+            Icons.image_outlined,
+          ),
+          const SizedBox(height: 32),
+          SizedBox(
+            height: 54,
+            child: ElevatedButton.icon(
+              onPressed: isSaving ? null : saveChanges,
+              icon: isSaving
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Icon(Icons.save_rounded),
+              label: Text(isSaving ? "Saving..." : "Save Changes"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.accentColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
+              ),
             ),
           ),
+        ],
       ),
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      style: TextStyle(color: AppTheme.titleTextColor),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: AppTheme.titleTextColor),
-        filled: true,
-        fillColor: Colors.white24,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        color: AppTheme.textColor,
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller,
+    IconData icon,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.dividerColor, width: 0.5),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(color: AppTheme.textColor, fontSize: 16),
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            color: AppTheme.subtextColor,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
+          prefixIcon: Icon(icon, color: AppTheme.accentColor, size: 20),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 16),
+        ),
       ),
     );
   }

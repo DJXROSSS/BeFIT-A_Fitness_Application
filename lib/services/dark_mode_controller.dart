@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:get/get.dart';
+import 'app_theme.dart';
 
 class ThemeController extends GetxController {
   var isDarkMode = false.obs;
@@ -10,6 +11,7 @@ class ThemeController extends GetxController {
 
   void toggleDarkMode(bool value) {
     isDarkMode.value = value;
+    AppTheme.setDarkMode(value);
     onThemeChanged?.call();
   }
 

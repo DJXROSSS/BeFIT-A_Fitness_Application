@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:befit/services/app_theme.dart';
+import '../services/app_theme.dart';
 
 class Aboutpage extends StatelessWidget {
   const Aboutpage({super.key});
@@ -23,7 +23,7 @@ class Aboutpage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme: IconThemeData(color: AppTheme.iconColor),
+          iconTheme: IconThemeData(color: AppTheme.textColor),
           centerTitle: true,
           title: Text(
             'About Us',
@@ -90,10 +90,9 @@ class Aboutpage extends StatelessWidget {
 
   Widget _buildInfoCard({required String title, required String content}) {
     return Card(
-      color: AppTheme.boxColor.withAlpha(102),
+      color: AppTheme.cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 6,
-      shadowColor: AppTheme.boxColor.withAlpha(115),
+      elevation: 0,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
@@ -112,7 +111,7 @@ class Aboutpage extends StatelessWidget {
               content,
               style: TextStyle(
                 fontSize: 16,
-                color: AppTheme.textColor.withAlpha(179),
+                color: AppTheme.subtextColor,
                 height: 1.5,
               ),
               textAlign: TextAlign.justify,

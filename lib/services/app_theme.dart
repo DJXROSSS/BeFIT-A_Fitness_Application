@@ -1,229 +1,245 @@
 import 'package:flutter/material.dart';
-import 'color_utils.dart';
-//
-// class AppTheme {
-//   // Color Palette
-//   // static Color primaryColor = Color(0xFF8EB69B); // Muted Mint
-//   // static Color backgroundColor = Color(0xFFDAF1DE); // Pale Sage
-//   // static Color appBarBg = Color(0xFF051F20); // Deep Forest Green
-//   // static Color drawerHeaderBg = Color(0xFF082B26); // Dark Emerald
-//   // static Color drawerIconColor = Color(0xFF163832); // Jungle Green
-//   // static Color logoutColor = Color(0xFF253547); // Deep Teal
-//   // static Color titleTextColor = Colors.white;
-//
-//   // static Color primaryColor = Color(0xFFB3A3D9); // Muted Lilac
-//   // static Color backgroundColor = Color(0xFFEAEAF2); // Pale Lavender
-//   // static Color appBarBg = Color(0xFF2C2A3B); // Deep Plum
-//   // static Color drawerHeaderBg = Color(0xFF403A59); // Dark Indigo
-//   // static Color drawerIconColor = Color(0xFF6A5F8B); // Medium Slate Blue
-//   // static Color logoutColor = Color(0xFF4D4C6B); // Dark Slate Blue
-//   // static Color titleTextColor = Colors.white;
-//
-//   // static Color primaryColor = Color(0xFF586D75); // Muted Mint
-//   // static Color backgroundColor = Color(0xFF8A9BA2); // Pale Sage
-//   // static Color appBarBg = Color(0xFF273E47);
-//   // static Color drawerHeaderBg = Color(0xFFBCC8CD); // Dark Emerald
-//   // static Color drawerIconColor = Color(0xFFDFE5E7); // Jungle Green
-//   // static Color logoutColor = Color(0xFFF2F5F6); // Deep Teal
-//   // static Color titleTextColor = Colors.white;
-//
-//   static Color primaryColor = Color(0xFFE4B9BF); // Muted Blush
-//   static Color backgroundColor = Color(0xFFF9EDEF); // Pale Rose
-//   static Color appBarBg = Color(0xFFB76E79); // Dusty Mauve
-//   static Color drawerHeaderBg = Color(0xFFC38790); // Rosewood
-//   static Color drawerIconColor = Color(0xFF8A545D); // Deep Mauve
-//   static Color logoutColor = Color(0xFF8A545D); // Deep Mauve
-//   static Color titleTextColor = Colors.white;
-//
-//   // static Color primaryColor = Color(0xFF333333); // Muted Mint
-//   // static Color backgroundColor = Color(0xFFAAAAAA); // Pale Sage
-//   // static Color appBarBg = Color(0xFF000000);
-//   // static Color drawerHeaderBg = Color(0xFF555555); // Dark Emerald
-//   // static Color drawerIconColor = Color(0xFF777777); // Jungle Green
-//   // static Color logoutColor = Color(0xFF999999); // Deep Teal
-//   // static Color titleTextColor = Colors.white;
-//   static Color textColor = Colors.white;
-//   static Color textShadowColor = Colors.white;
-//
-//   static ThemeData get theme {
-//     return ThemeData(
-//       useMaterial3: true,
-//       fontFamily: 'Segoe UI',
-//       scaffoldBackgroundColor: backgroundColor,
-//       colorScheme: ColorScheme.fromSeed(
-//         seedColor: primaryColor,
-//         primary: primaryColor,
-//         background: backgroundColor,
-//       ),
-//       appBarTheme: AppBarTheme(
-//         backgroundColor: appBarBg,
-//         elevation: 0,
-//         centerTitle: true,
-//         titleTextStyle: TextStyle(
-//           fontSize: 24,
-//           fontWeight: FontWeight.w800,
-//           letterSpacing: 2,
-//           color: Colors.white,
-//         ),
-//         iconTheme: IconThemeData(color: Colors.white),
-//       ),
-//       drawerTheme: const DrawerThemeData(
-//         backgroundColor: Colors.white,
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.only(
-//             topRight: Radius.circular(20),
-//             bottomRight: Radius.circular(20),
-//           ),
-//         ),
-//       ),
-//       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-//         backgroundColor: Color(0xFF051F20),
-//         selectedItemColor: Colors.white,
-//         unselectedItemColor: Colors.white70,
-//         showSelectedLabels: false,
-//         showUnselectedLabels: false,
-//         type: BottomNavigationBarType.fixed,
-//         elevation: 0,
-//       ),
-//       textTheme: const TextTheme(
-//         titleLarge: TextStyle(
-//           fontSize: 20,
-//           fontWeight: FontWeight.bold,
-//           color: Colors.black87,
-//         ),
-//         bodyMedium: TextStyle(
-//           fontSize: 16,
-//           color: Colors.black87,
-//         ),
-//         labelSmall: TextStyle(
-//           fontSize: 12,
-//           color: Colors.grey,
-//         ),
-//       ),
-//       elevatedButtonTheme: ElevatedButtonThemeData(
-//         style: ElevatedButton.styleFrom(
-//           backgroundColor: primaryColor,
-//           foregroundColor: Colors.white,
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(12),
-//           ),
-//           textStyle: const TextStyle(
-//             fontWeight: FontWeight.w600,
-//             fontSize: 16,
-//           ),
-//         ),
-//       ),
-//       inputDecorationTheme: InputDecorationTheme(
-//         filled: true,
-//         fillColor: Colors.grey.shade100,
-//         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-//         border: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(12),
-//           borderSide: BorderSide.none,
-//         ),
-//         hintStyle: TextStyle(
-//           color: Colors.grey.shade500,
-//         ),
-//       ),
-//     );
-//   }
-// }
 
+/// Minimal black and white theme - no gradients
 class AppTheme {
-  static late Color primaryColor;
-  static late Color backgroundColor;
-  static late Color appBarBg;
-  static late Color drawerHeaderBg;
-  static late Color drawerIconColor;
-  static late Color logoutColor;
-  static late Color titleTextColor;
-  static late Color textColor;
-  static late Color textShadowColor;
-  static late Color iconColor;
-  static late Color boxColor;
+  // Light Theme Colors - Black and off-white only
+  static const Color lightBg = Color(0xFFe4e2de);
+  static const Color lightCard = Color(0xFFe4e2de);
+  static const Color lightText = Color(0xFF000000);
+  static const Color lightSubtext = Color(0xFF000000);
+  static const Color lightAccent = Color(0xFF000000);
+  static const Color lightDivider = Color(0xFF000000);
+  static const Color lightGlassBlur = Color(0xFFe4e2de);
 
-  static void setCustomColor(Color userColor) {
-    appBarBg = userColor;
-    primaryColor = ColorUtils.lighten(userColor, 0.15);
-    backgroundColor = ColorUtils.lighten(userColor, 0.4);
-    drawerHeaderBg = ColorUtils.darken(userColor, 0.1);
-    drawerIconColor = ColorUtils.desaturate(userColor, 0.3);
-    logoutColor = drawerIconColor;
-    boxColor = Colors.black;
-    textColor =
-        textShadowColor =
-        iconColor =
-        titleTextColor = ColorUtils.isDark(userColor) ? Colors.white : Colors.black;
+  // Dark Theme Colors - Black and off-white only
+  static const Color darkBg = Color(0xFF000000);
+  static const Color darkCard = Color(0xFF000000);
+  static const Color darkText = Color(0xFFe4e2de);
+  static const Color darkSubtext = Color(0xFFe4e2de);
+  static const Color darkAccent = Color(0xFFe4e2de);
+  static const Color darkDivider = Color(0xFFe4e2de);
+  static const Color darkGlassBlur = Color(0xFF000000);
 
-  }
+  // Primary Action Colors - Black and white only
+  static const Color primaryBlue = Color(0xFF000000);
+  static const Color primaryGreen = Color(0xFF000000);
+  static const Color primaryRed = Color(0xFF000000);
+  static const Color primaryOrange = Color(0xFF000000);
+  static const Color primaryYellow = Color(0xFF000000);
+  static const Color primaryPurple = Color(0xFF000000);
+
+  // Dynamic theme colors
+  static bool isDarkMode = false;
+
+  // Accessors that return appropriate color based on theme
+  static Color get backgroundColor => isDarkMode ? darkBg : lightBg;
+  static Color get cardColor => isDarkMode ? darkCard : lightCard;
+  static Color get textColor => isDarkMode ? darkText : lightText;
+  static Color get subtextColor => isDarkMode ? darkSubtext : lightSubtext;
+  static Color get accentColor => isDarkMode ? darkAccent : lightAccent;
+  static Color get dividerColor => isDarkMode ? darkDivider : lightDivider;
+  static Color get glassBlurColor =>
+      isDarkMode ? darkGlassBlur : lightGlassBlur;
+  static Color get titleTextColor => textColor;
+  static Color get appBarBg => accentColor;
+  static Color get drawerHeaderBg => isDarkMode ? darkCard : lightCard;
+  static Color get drawerIconColor => accentColor;
+  static Color get logoutColor => primaryRed;
+
+  // Neumorphic shadow colors
+  static const Color lightShadow = Color.fromARGB(15, 0, 0, 0);
+  static const Color darkShadow = Color.fromARGB(25, 0, 0, 0);
+
+  /// Get the current theme based on dark mode setting
   static ThemeData get theme {
+    final isDark = isDarkMode;
+    final surface = isDark ? darkBg : lightBg;
+    final onSurface = isDark ? darkText : lightText;
+    final primary = primaryBlue;
+
     return ThemeData(
       useMaterial3: true,
-      fontFamily: 'Segoe UI',
-      scaffoldBackgroundColor: backgroundColor,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryColor,
-        primary: primaryColor,
-        background: backgroundColor,
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      fontFamily: '-apple-system, BlinkMacSystemFont, SF Pro Display, Segoe UI',
+      scaffoldBackgroundColor: surface,
+      canvasColor: surface,
+      cardColor: isDark ? darkCard : lightCard,
+      colorScheme: ColorScheme(
+        brightness: isDark ? Brightness.dark : Brightness.light,
+        primary: primary,
+        onPrimary: Colors.white,
+        secondary: primaryGreen,
+        onSecondary: Colors.white,
+        surface: surface,
+        onSurface: onSurface,
+        error: primaryRed,
+        onError: Colors.white,
       ),
+      // App Bar - Minimal with no shadow
       appBarTheme: AppBarTheme(
-        backgroundColor: appBarBg,
+        backgroundColor: surface,
+        foregroundColor: onSurface,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 2,
-          color: titleTextColor,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: onSurface,
+          letterSpacing: 0.5,
         ),
-        iconTheme: IconThemeData(color: titleTextColor),
+        iconTheme: IconThemeData(color: onSurface),
+        surfaceTintColor: Colors.transparent,
       ),
-      drawerTheme: const DrawerThemeData(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-      ),
+      // Bottom Navigation - Minimal style
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: appBarBg,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
+        backgroundColor: isDark ? darkCard : lightCard,
+        selectedItemColor: primary,
+        unselectedItemColor: isDark ? darkSubtext : lightSubtext,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         elevation: 0,
+        enableFeedback: true,
       ),
+      // Elevated Button - Apple-like
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          backgroundColor: primary,
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           textStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
+            letterSpacing: 0.5,
           ),
         ),
       ),
-      textTheme: const TextTheme(
-        titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
-        bodyMedium: TextStyle(fontSize: 16, color: Colors.black87),
-        labelSmall: TextStyle(fontSize: 12, color: Colors.grey),
+      // Text Button - Minimal
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: primary,
+          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        ),
       ),
+      // Input Decoration - Clean minimal style
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.grey.shade100,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+        fillColor: isDark ? darkCard : Color(0xFFF5F5F5),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
         ),
-        hintStyle: TextStyle(color: Colors.grey.shade500),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: isDark ? darkDivider : lightDivider,
+            width: 1,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: isDark ? darkDivider : lightDivider,
+            width: 1,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: primary, width: 2),
+        ),
+        hintStyle: TextStyle(
+          color: isDark ? darkSubtext : lightSubtext,
+          fontSize: 14,
+        ),
+        labelStyle: TextStyle(color: primary, fontSize: 14),
       ),
+      // Text Theme - Modern and clean
+      textTheme: TextTheme(
+        displayLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w700,
+          color: onSurface,
+          letterSpacing: -0.5,
+        ),
+        displayMedium: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          color: onSurface,
+          letterSpacing: -0.5,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: onSurface,
+          letterSpacing: 0.15,
+        ),
+        titleMedium: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: onSurface,
+          letterSpacing: 0.15,
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: onSurface,
+          letterSpacing: 0.15,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: onSurface,
+          letterSpacing: 0.15,
+        ),
+        bodySmall: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: isDark ? darkSubtext : lightSubtext,
+          letterSpacing: 0.15,
+        ),
+        labelSmall: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          color: isDark ? darkSubtext : lightSubtext,
+          letterSpacing: 0.5,
+        ),
+      ),
+      // Divider Theme
+      dividerTheme: DividerThemeData(
+        color: isDark ? darkDivider : lightDivider,
+        thickness: 0.5,
+        space: 1,
+      ),
+    );
+  }
+
+  /// Update theme mode
+  static void setDarkMode(bool dark) {
+    isDarkMode = dark;
+  }
+
+  /// Legacy method for compatibility
+  static void setCustomColor(Color userColor) {
+    // For backward compatibility - this is now handled by isDarkMode
+  }
+
+  /// Create a neumorphic shadow effect
+  static BoxShadow get neumorphicShadow {
+    return BoxShadow(
+      color: isDarkMode ? darkShadow : lightShadow,
+      blurRadius: 8,
+      offset: const Offset(0, 2),
+    );
+  }
+
+  /// Create an elevated neumorphic shadow effect
+  static BoxShadow get neumorphicElevatedShadow {
+    return BoxShadow(
+      color: isDarkMode ? darkShadow : lightShadow,
+      blurRadius: 12,
+      offset: const Offset(0, 4),
     );
   }
 }
