@@ -6,6 +6,7 @@ import 'app_theme.dart';
 class ThemeController extends GetxController {
   var isDarkMode = false.obs;
   var notificationsEnabled = true.obs;
+  var showSettings = false.obs;
 
   VoidCallback? onThemeChanged;
 
@@ -17,5 +18,9 @@ class ThemeController extends GetxController {
 
   void toggleNotifications(bool value) {
     notificationsEnabled.value = value;
+  }
+
+  void toggleSettings() {
+    showSettings.value = !showSettings.value;
   }
 }

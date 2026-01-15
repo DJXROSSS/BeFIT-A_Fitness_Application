@@ -303,15 +303,6 @@ class _ProgresspageState extends State<Progresspage> {
         color: AppTheme.cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.dividerColor, width: 0.5),
-        boxShadow: [
-          BoxShadow(
-            color: AppTheme.isDarkMode
-                ? Colors.black.withOpacity(0.2)
-                : Colors.grey.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

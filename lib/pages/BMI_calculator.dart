@@ -568,24 +568,6 @@ class _BMICalculatorState extends State<BMICalculator>
       decoration: BoxDecoration(
         color: isDark ? Color(0xFF1a1a2e) : Color(0xFFe8eaf6),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.3)
-                : Colors.black.withOpacity(0.05),
-            offset: Offset(4, 4),
-            blurRadius: 8,
-            // inset: true,
-          ),
-          BoxShadow(
-            color: isDark
-                ? Colors.white.withOpacity(0.02)
-                : Colors.white.withOpacity(0.9),
-            offset: Offset(-4, -4),
-            blurRadius: 8,
-            // inset: true,
-          ),
-        ],
       ),
       child: TextField(
         controller: controller,
@@ -642,30 +624,6 @@ class _BMICalculatorState extends State<BMICalculator>
                     ? Color(0xFF000000)
                     : Color(0xFFe4e2de),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: isSelected
-                    ? [
-                        BoxShadow(
-                          color: Color(0xFF000000).withOpacity(0.4),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ]
-                    : [
-                        BoxShadow(
-                          color: isDark
-                              ? Colors.black.withOpacity(0.4)
-                              : Colors.black.withOpacity(0.08),
-                          offset: Offset(4, 4),
-                          blurRadius: 8,
-                        ),
-                        BoxShadow(
-                          color: isDark
-                              ? Colors.white.withOpacity(0.03)
-                              : Colors.white.withOpacity(0.9),
-                          offset: Offset(-4, -4),
-                          blurRadius: 8,
-                        ),
-                      ],
               ),
               child: Column(
                 children: [
@@ -714,13 +672,6 @@ class _BMICalculatorState extends State<BMICalculator>
         decoration: BoxDecoration(
           color: Color(0xFF000000),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF000000).withOpacity(0.4),
-              blurRadius: 20,
-              offset: Offset(0, 10),
-            ),
-          ],
         ),
         child: Center(
           child: Text(
@@ -833,22 +784,6 @@ class _BMICalculatorState extends State<BMICalculator>
                       decoration: BoxDecoration(
                         color: isDark ? Color(0xFF000000) : Color(0xFFe4e2de),
                         borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          BoxShadow(
-                            color: isDark
-                                ? Colors.black.withOpacity(0.4)
-                                : Colors.black.withOpacity(0.08),
-                            offset: Offset(4, 4),
-                            blurRadius: 8,
-                          ),
-                          BoxShadow(
-                            color: isDark
-                                ? Colors.white.withOpacity(0.03)
-                                : Colors.white.withOpacity(0.9),
-                            offset: Offset(-4, -4),
-                            blurRadius: 8,
-                          ),
-                        ],
                       ),
                       child: Center(
                         child: Text(
@@ -880,12 +815,6 @@ class _BMICalculatorState extends State<BMICalculator>
           decoration: BoxDecoration(
             color: isDark ? Color(0xFF000000) : Color(0xFFe4e2de),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withOpacity(0.2)
-                  : Colors.white.withOpacity(0.5),
-              width: 1.5,
-            ),
           ),
           child: child,
         ),

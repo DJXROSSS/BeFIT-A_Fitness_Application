@@ -562,13 +562,6 @@ class _ProfilePageState extends State<ProfilePage>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Color(0xFF000000),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0xFF000000).withOpacity(0.4),
-                        blurRadius: 20,
-                        offset: Offset(0, 8),
-                      ),
-                    ],
                   ),
                   padding: const EdgeInsets.all(4),
                   child: Container(
@@ -592,13 +585,6 @@ class _ProfilePageState extends State<ProfilePage>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xFF000000),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0xFF000000).withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
                     ),
                     child: Icon(
                       Icons.verified_rounded,
@@ -754,13 +740,6 @@ class _ProfilePageState extends State<ProfilePage>
               decoration: BoxDecoration(
                 color: Color(0xFF000000),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFF000000).withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
               ),
               child: Icon(icon, color: Colors.white, size: 28),
             ),

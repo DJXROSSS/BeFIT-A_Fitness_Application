@@ -586,6 +586,7 @@ import 'chat_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'cardio_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -748,6 +749,9 @@ class _MainHomePageState extends State<MainHomePage>
     }
   }
 
+  int _selectedDayIndex = 0;
+  final List<String> _days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
   @override
   Widget build(BuildContext context) {
     themeController.onThemeChanged = () {
@@ -758,40 +762,341 @@ class _MainHomePageState extends State<MainHomePage>
 
     return Scaffold(
       extendBody: true,
-      body: Container(
-        color: isDark ? Color(0xFF000000) : Color(0xFFe4e2de),
-        child: SafeArea(
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildHeader(isDark),
-                        const SizedBox(height: 24),
-                        // _buildMotivationalCard(isDark),
-                        // const SizedBox(height: 28),
-                        _buildStreakCard(isDark),
-                        const SizedBox(height: 28),
-                        // _buildActivityRings(isDark),
-                        // const SizedBox(height: 28),
-                        _buildDailyMetrics(isDark),
-                        const SizedBox(height: 28),
-                        _buildStartWorkoutButton(isDark),
-                        const SizedBox(height: 100),
-                      ],
-                    ),
+      backgroundColor: isDark ? Color(0xFF000000) : Color(0xFFe4e2de),
+      body: SafeArea(
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  _buildAppHeader(isDark),
+                  const SizedBox(height: 32),
+                  _buildMyActivitySection(isDark),
+                  const SizedBox(height: 24),
+                  _buildDaySelector(isDark),
+                  const SizedBox(height: 32),
+                  _buildCircularProgress(isDark),
+                  const SizedBox(height: 32),
+                  _buildDailyIntakeSection(isDark),
+                  const SizedBox(height: 24),
+                  _buildStartWorkoutButton(isDark),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppHeader(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        GestureDetector(
+          onTap: () => Scaffold.of(context).openDrawer(),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF1a1a1a) : Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isDark ? Colors.white12 : Colors.black12,
+              ),
+            ),
+            child: Icon(
+              Icons.menu_rounded,
+              color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+              size: 22,
+            ),
+          ),
+        ),
+        Text(
+          'BeFit',
+          style: GoogleFonts.notoSans(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+            letterSpacing: -0.5,
+          ),
+        ),
+        GestureDetector(
+          onTap: () => themeController.toggleSettings(),
+          child: Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: isDark ? Color(0xFF1a1a1a) : Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isDark ? Colors.white12 : Colors.black12,
+              ),
+            ),
+            child: Icon(
+              Icons.settings_outlined,
+              color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+              size: 22,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMyActivitySection(bool isDark) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'My Activity',
+          style: GoogleFonts.notoSans(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+          ),
+        ),
+        Text(
+          DateFormat('MMM d, yyyy').format(DateTime.now()),
+          style: GoogleFonts.notoSans(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: isDark ? Colors.white54 : Colors.black45,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDaySelector(bool isDark) {
+    final today = DateTime.now().weekday % 7;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(7, (index) {
+        final isSelected = index == today;
+        return GestureDetector(
+          onTap: () => setState(() => _selectedDayIndex = index),
+          child: Container(
+            width: 44,
+            height: 64,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? Color(0xFF000000)
+                  : isDark
+                  ? Color(0xFF1a1a1a)
+                  : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected
+                    ? Colors.transparent
+                    : isDark
+                    ? Colors.white12
+                    : Colors.black12,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _days[index],
+                  style: GoogleFonts.notoSans(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: isSelected
+                        ? Colors.white
+                        : isDark
+                        ? Colors.white54
+                        : Colors.black45,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${DateTime.now().subtract(Duration(days: today - index)).day}',
+                  style: GoogleFonts.notoSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected
+                        ? Colors.white
+                        : isDark
+                        ? Color(0xFFe4e2de)
+                        : Color(0xFF000000),
                   ),
                 ),
               ],
             ),
           ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildCircularProgress(bool isDark) {
+    final calorieTarget = 2000.0;
+    final currentCalories = double.tryParse(_calorieResult ?? '0') ?? 0;
+    final progress = (currentCalories / calorieTarget).clamp(0.0, 1.0);
+
+    return Center(
+      child: Container(
+        width: 280,
+        height: 280,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Background circle
+            Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isDark ? Color(0xFF1a1a1a) : Colors.white,
+                border: Border.all(
+                  color: isDark ? Colors.white12 : Colors.black12,
+                  width: 1,
+                ),
+              ),
+            ),
+            // Progress arc
+            SizedBox(
+              width: 240,
+              height: 240,
+              child: CircularProgressIndicator(
+                value: progress,
+                strokeWidth: 12,
+                backgroundColor: isDark ? Color(0xFF2a2a2a) : Color(0xFFf0f0f0),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF000000)),
+                strokeCap: StrokeCap.round,
+              ),
+            ),
+            // Inner content
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.local_fire_department_rounded,
+                  size: 32,
+                  color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  displayValue(_calorieResult),
+                  style: GoogleFonts.notoSans(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+                    letterSpacing: -1,
+                  ),
+                ),
+                Text(
+                  'of ${calorieTarget.toInt()} kcal',
+                  style: GoogleFonts.notoSans(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white54 : Colors.black45,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDailyIntakeSection(bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Daily Intake',
+          style: GoogleFonts.notoSans(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildIntakeCard(
+                isDark: isDark,
+                icon: Icons.egg_rounded,
+                label: 'Protein',
+                value: displayValue(_proteinResult),
+                unit: 'g',
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildIntakeCard(
+                isDark: isDark,
+                icon: Icons.water_drop_rounded,
+                label: 'Water',
+                value: displayValue(_waterIntake),
+                unit: 'cups',
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildIntakeCard(
+                isDark: isDark,
+                icon: Icons.directions_walk_rounded,
+                label: 'Steps',
+                value: displayValue(_stepsCount),
+                unit: '',
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIntakeCard({
+    required bool isDark,
+    required IconData icon,
+    required String label,
+    required String value,
+    required String unit,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? Color(0xFF1a1a1a) : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: isDark ? Colors.white12 : Colors.black12),
+      ),
+      child: Column(
+        children: [
+          Icon(
+            icon,
+            size: 24,
+            color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.notoSans(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
+            ),
+          ),
+          Text(
+            unit.isNotEmpty ? '$label ($unit)' : label,
+            style: GoogleFonts.notoSans(
+              fontSize: 11,
+              fontWeight: FontWeight.w500,
+              color: isDark ? Colors.white54 : Colors.black45,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -938,13 +1243,6 @@ class _MainHomePageState extends State<MainHomePage>
                       decoration: BoxDecoration(
                         color: Color(0xFF000000),
                         borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF000000).withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
                       ),
                       child: Icon(
                         Icons.local_fire_department_rounded,
@@ -1198,13 +1496,6 @@ class _MainHomePageState extends State<MainHomePage>
               decoration: BoxDecoration(
                 color: Color(0xFF000000),
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFF000000).withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
               ),
               child: Icon(icon, color: Colors.white, size: 18),
             ),
@@ -1266,15 +1557,8 @@ class _MainHomePageState extends State<MainHomePage>
         width: double.infinity,
         height: 56,
         decoration: BoxDecoration(
-          color: Color(0xFF000000),
+          color: isDark ? Color(0xFFe4e2de) : Color(0xFF000000),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xFF000000).withOpacity(0.4),
-              blurRadius: 20,
-              offset: Offset(0, 10),
-            ),
-          ],
         ),
         child: Center(
           child: Text(
@@ -1282,7 +1566,7 @@ class _MainHomePageState extends State<MainHomePage>
             style: GoogleFonts.notoSans(
               fontSize: 17,
               fontWeight: FontWeight.w600,
-              color: Colors.white,
+              color: isDark ? Color(0xFF000000) : Colors.white,
               letterSpacing: -0.3,
             ),
           ),
@@ -1335,22 +1619,6 @@ class _MainHomePageState extends State<MainHomePage>
       decoration: BoxDecoration(
         color: isDark ? Color(0xFF1a1a2e) : Color(0xFFe8eaf6),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withOpacity(0.5)
-                : Colors.black.withOpacity(0.1),
-            offset: Offset(8, 8),
-            blurRadius: 16,
-          ),
-          BoxShadow(
-            color: isDark
-                ? Colors.white.withOpacity(0.05)
-                : Colors.white.withOpacity(0.9),
-            offset: Offset(-8, -8),
-            blurRadius: 16,
-          ),
-        ],
       ),
       child: child,
     );
@@ -1369,22 +1637,6 @@ class _MainHomePageState extends State<MainHomePage>
         decoration: BoxDecoration(
           color: isDark ? Color(0xFF1a1a2e) : Color(0xFFe8eaf6),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: isDark
-                  ? Colors.black.withOpacity(0.4)
-                  : Colors.black.withOpacity(0.08),
-              offset: Offset(4, 4),
-              blurRadius: 8,
-            ),
-            BoxShadow(
-              color: isDark
-                  ? Colors.white.withOpacity(0.03)
-                  : Colors.white.withOpacity(0.9),
-              offset: Offset(-4, -4),
-              blurRadius: 8,
-            ),
-          ],
         ),
         child: Icon(
           icon,

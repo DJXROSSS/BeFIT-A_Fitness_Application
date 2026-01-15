@@ -52,7 +52,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ThemeController themeController = Get.find();
   int _selectedIndex = 2;
-  bool _showSettings = false;
 
   final List<Widget> _pages = [
     BMIcalculatorPage(),
@@ -68,35 +67,39 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _callSettings() {
+    themeController.toggleSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppTheme.setDarkMode(themeController.isDarkMode.value);
     return Scaffold(
       extendBody: true,
       backgroundColor: AppTheme.backgroundColor,
-      appBar: AppBar(
-        title: const Text(
-          'BeFit',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-        ),
-        centerTitle: true,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu_rounded),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_rounded),
-            onPressed: () {
-              setState(() {
-                _showSettings = !_showSettings;
-              });
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //     'BeFit',
+      //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+      //   ),
+      //   centerTitle: true,
+      //   leading: Builder(
+      //     builder: (context) => IconButton(
+      //       icon: const Icon(Icons.menu_rounded),
+      //       onPressed: () => Scaffold.of(context).openDrawer(),
+      //     ),
+      //   ),
+      //   actions: [
+      //     IconButton(
+      //       icon: const Icon(Icons.settings_rounded),
+      //       onPressed: () {
+      //         setState(() {
+      //           _showSettings = !_showSettings;
+      //         });
+      //       },
+      //     ),
+      //   ],
+      // ),
       drawer: Drawer(
         backgroundColor: AppTheme.cardColor,
         child: SafeArea(
@@ -167,11 +170,14 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          _pages[_selectedIndex],
-          if (_showSettings) _buildSettingsPanel(context),
-        ],
+      body: Obx(
+        () => Stack(
+          children: [
+            _pages[_selectedIndex],
+            if (themeController.showSettings.value)
+              _buildSettingsPanel(context),
+          ],
+        ),
       ),
       bottomNavigationBar: _buildMinimalBottomNav(),
     );
@@ -231,9 +237,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      _showSettings = false;
-                    });
+                    themeController.showSettings.value = false;
                   },
                   child: Icon(Icons.close_rounded, color: AppTheme.textColor),
                 ),

@@ -48,16 +48,6 @@ class FrostedGlassBox extends StatelessWidget {
                   : Colors.white.withOpacity(0.2),
               width: 1.5,
             ),
-            // Neumorphic shadow
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.isDarkMode
-                    ? Colors.black.withOpacity(0.2)
-                    : Colors.black.withOpacity(0.08),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
           ),
           child: child,
         ),
@@ -95,7 +85,6 @@ class MinimalGlassBox extends StatelessWidget {
           color: AppTheme.glassBlurColor,
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(color: AppTheme.dividerColor, width: 0.5),
-          boxShadow: [AppTheme.neumorphicShadow],
         ),
         child: child,
       ),
